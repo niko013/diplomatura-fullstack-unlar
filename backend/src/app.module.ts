@@ -1,23 +1,40 @@
 import { Module } from '@nestjs/common';
-import { AppController } from './app.controller';
-import { AppService } from './app.service';
-import { ConfigModule, ConfigService } from '@nestjs/config';
+
+import { ConfigModule } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
+
 import { ProductosModule } from './productos/productos.module';
 import { UsuariosModule } from './usuarios/usuarios.module';
-import { SemillaModule } from './semilla/semilla.module';
 import { SeedModule } from './seed/seed.module';
 import { AuthModule } from './auth/auth.module';
 
+import { envs } from './common/config/envs';
+
+
+
 @Module({
-  imports: [ConfigModule.forRoot(), TypeOrmModule.forRoot(), ProductosModule, UsuariosModule, SemillaModule, SeedModule, AuthModule],
-  controllers: [AppController],
-  providers: [AppService],
+  imports: [ConfigModule.forRoot(),
+     TypeOrmModule.forRoot({
+      type: 'postgres',
+      host: envs.dbHost,
+
+      port: envs.dbPort,
+      database: envs.dbName,
+      username: envs.dbUserName,
+      password: envs.dbPassword,
+
+      autoLoadEntities: true,  // PARA QUE CARGUE AUTOMATICAMENTE LAS ENTIDADES
+      synchronize: true, //EN PRODUCCION NO SE USA
+      
+     }),
+    ProductosModule,
+    UsuariosModule,
+    SeedModule,
+    AuthModule],
+  
 })
 export class AppModule {
 
-  constructor(
-    private readonly configService: ConfigService
-  ){}
+  
 
 }

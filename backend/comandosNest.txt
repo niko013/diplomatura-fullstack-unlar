@@ -1,0 +1,13 @@
+nest g class common/dto/create-modulo.dto --no-spec
+src/
+└── common/
+    └── dto/
+        └── create-modulo.dto.ts
+-----------------------------------------------------------
+
+nest g class modulo/dto/create-modulo.dto --no-spec
+src/
+└── common/
+    └── dto/
+        └──create-modulo.dto/
+            └──create-modulo.dto.ts
