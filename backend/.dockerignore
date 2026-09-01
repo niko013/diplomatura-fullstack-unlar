@@ -1,0 +1,46 @@
+
+# ==========================================
+# 1. Dependencias y Builds Locales
+# ==========================================
+node_modules
+.npm
+dist
+build
+
+# ==========================================
+# 2. Control de Versiones e IDEs
+# ==========================================
+.git
+.gitignore
+.gitattributes
+.vscode
+.idea
+
+# ==========================================
+# 3. Archivos Temporales y Almacenamiento Local
+# ==========================================
+*.db
+*.sqlite
+uploads
+storage
+tmp
+
+# ==========================================
+# 4. Datos Sensibles y Variables de Entorno
+# ==========================================
+.env
+.env.*
+!.env.example
+
+# ==========================================
+# 5. Tests, Logs y Docker
+# ==========================================
+test
+coverage
+*.spec.ts
+*.e2e-spec.ts
+Dockerfile*
+docker-compose*.yml
+.dockerignore
+README.md
+*.log
