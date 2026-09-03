@@ -9,12 +9,13 @@ import { SeedModule } from './seed/seed.module';
 import { AuthModule } from './auth/auth.module';
 
 import { envs } from './common/config/envs';
-
+import { CategoriasModule } from './categorias/categorias.module';
 
 
 @Module({
-  imports: [ConfigModule.forRoot(),
-     TypeOrmModule.forRoot({
+  imports: [
+    ConfigModule.forRoot(),
+    TypeOrmModule.forRoot({
       type: 'postgres',
       host: envs.dbHost,
 
@@ -25,16 +26,16 @@ import { envs } from './common/config/envs';
 
       autoLoadEntities: true,  // PARA QUE CARGUE AUTOMATICAMENTE LAS ENTIDADES
       synchronize: true, //EN PRODUCCION NO SE USA
-      
-     }),
+    }),
     ProductosModule,
     UsuariosModule,
     SeedModule,
-    AuthModule],
-  
+    AuthModule,
+    CategoriasModule],
+
 })
 export class AppModule {
 
-  
+
 
 }

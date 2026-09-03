@@ -19,3 +19,5 @@ con ene el (puerto 4200). Abrí `http://localhost:4200` y listo — el simulador
 
 
 
+docker-compose down //remueve contedor
+docker-compose up -d //Levanta los cambios
