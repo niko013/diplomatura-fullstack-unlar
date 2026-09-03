@@ -9,7 +9,7 @@ export class ProductosService {
   }
 
   findAll() {
-    return `This action returns all productos`;
+    return `Get productos - Diplomatura UNLaR - 2026`;
   }
 
   findOne(id: number) {
