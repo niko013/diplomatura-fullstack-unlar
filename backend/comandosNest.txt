@@ -11,3 +11,7 @@ src/
     └── dto/
         └──create-modulo.dto/
             └──create-modulo.dto.ts
+
+------------------------------------------------------------
+Crar interceptores
+nest g interceptor common/interceptors/response --no-spec

@@ -1,26 +1,85 @@
-import { Injectable } from '@nestjs/common';
+import { BadRequestException, Injectable, InternalServerErrorException, Logger, NotFoundException,  } from '@nestjs/common';
+import { InjectRepository } from '@nestjs/typeorm';
+import { ILike, Repository } from 'typeorm';
+
+import { isUUID } from 'class-validator';
+import * as bcrypt from 'bcrypt';
+
 import { CreateUsuarioDto } from './dto/create-usuario.dto';
 import { UpdateUsuarioDto } from './dto/update-usuario.dto';
 
+import { Usuario } from './entities/usuario.entity';
+
 @Injectable()
 export class UsuariosService {
-  create(createUsuarioDto: CreateUsuarioDto) {
-    return 'This action adds a new usuario';
+
+  private readonly logger = new Logger('UsuariosService');
+
+  constructor(
+    @InjectRepository(Usuario)
+    private readonly usuariosRepository: Repository<Usuario>
+  ){}
+
+  async create(createUsuarioDto: CreateUsuarioDto) {
+    const {clave, ...usuarioData} = createUsuarioDto;
+
+    try{
+      const usuarios = this.usuariosRepository.create({
+        ...usuarioData,
+        clave: bcrypt.hashSync(clave, 10)
+      });
+      await this.usuariosRepository.save(usuarios);
+      return usuarios;
+    }catch(error){
+      this.handleDBException(error);
+    }
   }
 
-  findAll() {
-    return `This action returns all usuarios`;
+  async findAll(){
+    return this.usuariosRepository.find({
+      order: {creadoEl: 'DESC'}
+    })
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} usuario`;
+  async findOne(term: string) {
+    console.log('Termino',term);
+    const usuario = await this.usuariosRepository.findOneBy(
+      isUUID(term)
+      ?{id: term}
+      :{nombre: ILike(`%${term.trim()}%`) }
+    )
+    if (!usuario) {
+      throw new NotFoundException(`Usuario con término '${term}' no encontrado`);
+    }
+    return usuario;
   }
 
   update(id: number, updateUsuarioDto: UpdateUsuarioDto) {
     return `This action updates a #${id} usuario`;
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} usuario`;
+  async remove(id: string) {
+    const usuario = await this.findOne(id)
+    await this.usuariosRepository.remove(usuario!)
+    throw new BadRequestException(`Usuario Eliminado: ${id}`)
   }
+
+  //TODO: ----------------------------------------------------
+  private handleDBException(error: any) {
+    if (error.code === '23505')
+      throw new BadRequestException(error.detail)
+
+    this.logger.error(error) // esto lo que vemos en consola en el servidor
+    throw new InternalServerErrorException('Error inesperado; consulte el registro del servidor.') //Esto lo que ve el usuario
+  }
+
+  async deleteAllUsers() {
+    const query = this.usuariosRepository.createQueryBuilder('usuariosremove')
+    try {
+      return await query.delete().where({}).execute() // Elimina todos los usuarios de la base de datos
+    } catch (error) {
+      this.handleDBException(error);
+    }
+  }
+
 }
