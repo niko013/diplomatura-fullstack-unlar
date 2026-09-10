@@ -20,6 +20,11 @@
     "forceConsistentCasingInFileNames": true,
     "noImplicitAny": false,
     "strictBindCallApply": false,
-    "noFallthroughCasesInSwitch": false
+    "noFallthroughCasesInSwitch": false,
+    "paths": {                            // <-- 2. Configurar los alias
+      "@common/*": ["src/common/*"],
+      "@auth/*": ["src/auth/*"]
+    }
+
   }
 }

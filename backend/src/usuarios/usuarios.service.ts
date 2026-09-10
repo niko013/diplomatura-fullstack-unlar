@@ -10,6 +10,9 @@ import { UpdateUsuarioDto } from './dto/update-usuario.dto';
 
 import { Usuario } from './entities/usuario.entity';
 
+import { handleDBException } from '@common/helpers/handle-db-exception.helper';
+
+
 @Injectable()
 export class UsuariosService {
 
@@ -31,7 +34,7 @@ export class UsuariosService {
       await this.usuariosRepository.save(usuarios);
       return usuarios;
     }catch(error){
-      this.handleDBException(error);
+      handleDBException(error, this.logger)
     }
   }
 
@@ -60,26 +63,21 @@ export class UsuariosService {
 
   async remove(id: string) {
     const usuario = await this.findOne(id)
-    await this.usuariosRepository.remove(usuario!)
+    if(!usuario){
+      throw new BadRequestException(`Usuario no encontrada: ${id}`)
+    }
+    await this.usuariosRepository.remove(usuario)
     throw new BadRequestException(`Usuario Eliminado: ${id}`)
   }
 
-  //TODO: ----------------------------------------------------
-  private handleDBException(error: any) {
-    if (error.code === '23505')
-      throw new BadRequestException(error.detail)
-
-    this.logger.error(error) // esto lo que vemos en consola en el servidor
-    throw new InternalServerErrorException('Error inesperado; consulte el registro del servidor.') //Esto lo que ve el usuario
-  }
 
   async deleteAllUsers() {
     const query = this.usuariosRepository.createQueryBuilder('usuariosremove')
     try {
       return await query.delete().where({}).execute() // Elimina todos los usuarios de la base de datos
     } catch (error) {
-      this.handleDBException(error);
+      handleDBException(error, this.logger )
     }
   }
 
-}
+} 
