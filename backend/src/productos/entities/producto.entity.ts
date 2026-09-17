@@ -28,8 +28,8 @@ export class Producto {
   categoriaId: number;
 
   @ManyToOne(() => Categoria, (categoria) => categoria.productos, {
-    onDelete: 'RESTRICT',
-  })
+    onDelete: 'RESTRICT',                      //Podés borrar cualquier producto en cualquier momento sin afectar a la categoría a la que pertenece.
+  })                                           // Si la categoría TIENE productos asociados: La base de datos bloquea la eliminación y lanza un error.
   @JoinColumn({ name: 'categoria_id' })
   categoria: Categoria;
 

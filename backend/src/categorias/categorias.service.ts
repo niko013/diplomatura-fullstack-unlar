@@ -1,4 +1,4 @@
-import { BadRequestException, Injectable, Logger } from '@nestjs/common';
+import { BadRequestException, Injectable, Logger, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 
@@ -16,27 +16,38 @@ export class CategoriasService {
   constructor(
     @InjectRepository(Categoria)
     private readonly categoriasRepository: Repository<Categoria>
-  ){}
+  ) { }
 
   async create(createCategoriaDto: CreateCategoriaDto) {
-    try{
+    // 1. Verificar si la categoría ya existe por nombre // Evisto el Santo de Id en la DB en caso que de ya exista el producto
+    const existeCategoria = await this.categoriasRepository.findOneBy({
+      nombre: createCategoriaDto.nombre,
+    });
+
+    if (existeCategoria) {
+      throw new BadRequestException(
+        `La categoría con el nombre '${createCategoriaDto.nombre}' ya existe.`,
+      );
+    }
+
+    try {
       const categoria = this.categoriasRepository.create(createCategoriaDto);
       await this.categoriasRepository.save(categoria);
       return categoria;
     }
-    catch(error){
+    catch (error) {
       handleDBException(error, this.logguer);
     }
   }
 
   findAll() {
     return this.categoriasRepository.find({
-      order: {id: 'ASC'}
+      order: { id: 'ASC' }
     });
   }
 
   async findOne(id: number) {
-    return await this.categoriasRepository.findOneBy({id})
+    return await this.categoriasRepository.findOneBy({ id })
   }
 
   update(id: number, updateCategoriaDto: UpdateCategoriaDto) {
@@ -46,9 +57,9 @@ export class CategoriasService {
   async remove(id: number) {
     const categoria = await this.findOne(id);
     if (!categoria) {
-      throw new BadRequestException(`Categoria no encontrada: ${id}`);
+      throw new NotFoundException(`Categoria no encontrada: ${id}`);
     }
     await this.categoriasRepository.remove(categoria);
-    throw new BadRequestException(`categoria Eliminado: ${id}`);
+    return { message: `Categoria con ID:'${id}' eliminado con éxito`};
   }
 }
