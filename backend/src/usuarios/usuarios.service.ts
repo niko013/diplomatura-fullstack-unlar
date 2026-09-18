@@ -1,15 +1,15 @@
-import { BadRequestException, Injectable, InternalServerErrorException, Logger, NotFoundException,  } from '@nestjs/common';
+import { Injectable, Logger, NotFoundException,  } from '@nestjs/common';
+import { handleDBException } from '@common/helpers/handle-db-exception.helper';
+
 import { InjectRepository } from '@nestjs/typeorm';
 import { ILike, Repository } from 'typeorm';
 
 import { isUUID } from 'class-validator';
 import * as bcrypt from 'bcrypt';
 
-import { Usuario } from './entities/usuario.entity';
 import { CreateUsuarioDto } from './dto/create-usuario.dto';
 import { UpdateUsuarioDto } from './dto/update-usuario.dto';
-
-import { handleDBException } from '@common/helpers/handle-db-exception.helper';
+import { Usuario } from './entities/usuario.entity';
 
 
 @Injectable()

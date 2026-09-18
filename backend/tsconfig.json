@@ -24,7 +24,10 @@
     
     "paths": {                            // <-- 2. Configurar los alias
       "@common/*": ["src/common/*"],
-      "@auth/*": ["src/auth/*"]
+      "@auth/*": ["src/auth/*"],
+      "@usuarios/*": ["src/usuarios/*"],
+      "@productos/*": ["src/productos/*"],
+      "@caregorias/*": ["src/categorias/*"],
     },
     "strictPropertyInitialization": false, // Desactiva la inicializacion del dto y entities para que no muestre error con las propiedades
   }

@@ -1,6 +1,5 @@
-import { Categoria } from "src/categorias/entities/categoria.entity";
 import { Column, CreateDateColumn, Entity, JoinColumn, ManyToOne, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
-
+import { Categoria } from "@caregorias/entities/categoria.entity";
 
 @Entity({name:'productos'})
 

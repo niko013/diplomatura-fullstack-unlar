@@ -13,11 +13,10 @@ frontend .env.templete -> .env
 docker-compose up -d --build
 ```
 
-Esto levanta 3 contenedores: `postgres - db`, `backend - Nestjs ` (puerto 3000) y `frontend - Angular` servido
-con ene el (puerto 4200). Abrí `http://localhost:4200` y listo — el simulador ya est
+Esto levanta 3 contenedores: `postgresql - db`, `backend - Nestjs ` (puerto 3000) y `frontend - Angular` servidor en el (puerto 4200). Abrír `http://localhost:4200` y listo — el simulador ya esta
 
 
 
 
-docker-compose down //remueve contedor
+docker-compose down //remueve contenedor
 docker-compose up -d //Levanta los cambios

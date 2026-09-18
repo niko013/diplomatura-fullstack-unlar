@@ -8,25 +8,14 @@ import { UsuariosModule } from './usuarios/usuarios.module';
 import { SeedModule } from './seed/seed.module';
 import { AuthModule } from './auth/auth.module';
 
-import { envs } from './common/config/envs';
 import { CategoriasModule } from './categorias/categorias.module';
-
+import { databaseConfig } from '@common/config/database.config';
 
 @Module({
   imports: [
+    // ConfigModule.forRoot({isGlobal: true}), //sirve para cargar las variables de entorno de tu archivo .env en toda la aplicación sin tener que importar el ConfigModule en cada uno de tus módulos de negocio
     ConfigModule.forRoot(),
-    TypeOrmModule.forRoot({
-      type: 'postgres',
-      host: envs.dbHost,
-
-      port: envs.dbPort,
-      database: envs.dbName,
-      username: envs.dbUserName,
-      password: envs.dbPassword,
-
-      autoLoadEntities: true,  // PARA QUE CARGUE AUTOMATICAMENTE LAS ENTIDADES
-      synchronize: true, //EN PRODUCCION NO SE USA
-    }),
+    TypeOrmModule.forRoot(databaseConfig),
     ProductosModule,
     UsuariosModule,
     SeedModule,
@@ -34,8 +23,4 @@ import { CategoriasModule } from './categorias/categorias.module';
     CategoriasModule],
 
 })
-export class AppModule {
-
-
-
-}
+export class AppModule {}

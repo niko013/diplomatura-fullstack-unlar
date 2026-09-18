@@ -1,12 +1,13 @@
-import { BadRequestException, Injectable, Logger, NotFoundException } from '@nestjs/common';
+import { Injectable, Logger, NotFoundException } from '@nestjs/common';
+import { handleDBException } from '@common/helpers/handle-db-exception.helper';
+import { InjectRepository } from '@nestjs/typeorm';
+import { ILike, Repository } from 'typeorm';
+
 import { CreateProductoDto } from './dto/create-producto.dto';
 import { UpdateProductoDto } from './dto/update-producto.dto';
 import { Producto } from './entities/producto.entity';
-import { ILike, Repository } from 'typeorm';
-import { InjectRepository } from '@nestjs/typeorm';
-import { handleDBException } from '@common/helpers/handle-db-exception.helper';
 
-import { isUUID, IsUUID } from 'class-validator';
+import {isUUID} from 'class-validator';
 
 @Injectable()
 export class ProductosService {

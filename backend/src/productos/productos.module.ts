@@ -1,7 +1,8 @@
 import { Module } from '@nestjs/common';
-import { ProductosService } from './productos.service';
-import { ProductosController } from './productos.controller';
 import { TypeOrmModule } from '@nestjs/typeorm';
+
+import { ProductosController } from './productos.controller';
+import { ProductosService } from './productos.service';
 import { Producto } from './entities/producto.entity';
 
 @Module({
