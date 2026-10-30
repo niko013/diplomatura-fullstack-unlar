@@ -1,0 +1,25 @@
+import { Routes } from "@angular/router";
+import { AdminDashboardLayout } from "./pages/admin-dashboard-layout/admin-dashboard-layout";
+import { ProductsAdminPage } from "./pages/product-admin-page/products-admin-page/products-admin-page";
+import { ProductAdminPage } from "./pages/product-admin-page/product-admin-page";
+
+export const adminDashboardRoutes: Routes = [
+    {
+        path: '',
+        component: AdminDashboardLayout,
+        children: [
+            {
+                path: 'products',
+                component: ProductsAdminPage
+            },
+            {
+                path: 'product/:id',
+                component: ProductAdminPage
+            },
+            {
+                path: '**',
+                redirectTo: 'products'
+            }
+        ]
+    }
+]
